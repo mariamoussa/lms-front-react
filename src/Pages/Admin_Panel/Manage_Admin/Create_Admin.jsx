@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import BT from '../../../Components/Button';
+import React, { useState } from 'react';
 import API from '../../../api';
+
+import IN from '../../../Components/Input';
+import BT from '../../../Components/Button';
 
 export default function Create_Admin(props) {
 
@@ -8,73 +10,73 @@ export default function Create_Admin(props) {
     const [lname, setLname] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
 
-    const onSubmit = () => {
-        const data =
-        {
+    const handleSave = async () => {
+
+        let reqBody = {
             fname: fname,
             lname: lname,
             username: username,
             password: password,
             phone: phone,
-            email: email,
+            email:email
         };
 
-        API.post(`admin`, data);
-        props.history.push('/admin');
+        await API.post(`admin`, (reqBody));
+        await props.history.push(`/admin/list`);
     }
 
     return (
         <div>
-            <label htmlFor="firstname">Enter your first name: </label>
-            <input type="text"
-                id="fname"
-                placeholder="Enter your first name"
+            <IN
+                type="text"
+                name="fname"
                 value={fname}
-                onChange={(e) => setFname(e.target.value)} 
-            /><br />
-
-            <label htmlFor="lastname">Enter your last name: </label><input type="text"
-                id="lname"
-                placeholder="Enter your last name"
+                onChange={e => setFname(e.target.value)}
+                placeholder="First Name"
+            />
+            <IN
+                type="text"
+                name="lname"
                 value={lname}
-                onChange={(e) => setLname(e.target.value)} /><br />
-
-            <label htmlFor="username">Enter your username: </label><input type="text"
-                id="username"
-                placeholder="Enter your username"
+                onChange={e => setLname(e.target.value)}
+                placeholder="Last Name"
+            />
+            <IN
+                type="text"
+                name="username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)} /><br />
-
-            <label htmlFor="password">Enter your password: </label><input type="text"
-                id="password"
-                placeholder="Enter your password"
+                onChange={e => setUsername(e.target.value)}
+                placeholder="Username"
+            />
+            <IN
+                type="text"
+                name="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)} /><br />
-
-
-            <label htmlFor="phone">Enter your phone: </label>
-            <input type="text"
-                id="phone"
-                placeholder="Enter your phone"
+                onChange={e => setPassword(e.target.value)}
+                placeholder="Password"
+            />
+            <IN
+                type="integer"
+                name="phone"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={e => setPhone(e.target.value)}
+                placeholder="Phone"
             />
-
-            <input type="email"
-                id="email"
-                placeholder="Enter your email"
+            <IN
+                type="text"
+                name="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="Email"
+            />
+            <BT
+                description="Add"
+                onClick={handleSave}
             />
 
-            <BT
-                type="button"
-                onClick={onSubmit}
-                description="Save"
-            />
         </div>
     );
 }

@@ -1,21 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import Sections from '../../../Components/Sections_Class';
+import { Link } from 'react-router-dom';
 
-
-export default function Create_Student(props) {
+export default function Edit_Student(props) {
 
     const [fname, setFname] = useState("");
     const [lname, setLname] = useState("");
     const [mname, setMname] = useState("");
     const [mothername, setMothername] = useState("");
-    const [dateofbirth, setDateofbirth] = useState("");
+    const [dateofbirth, setDate] = useState("");
     const [email, setEmail] = useState("");
     const [address, setAddress] = useState("");
-    const [pnumber, setPnumber] = useState("");
-    const [image, setImage] = useState("");
-    const [section_id, setSection_id] = useState("");
-    
+    const [pnumber, setNumber] = useState("");
+    const [section_id, setSection] = useState("");
+
+    const getStudent = async id => {
+        const result = await fetch(`http://127.0.0.1:8000/api/student/${id}`);
+        const data = await result.json();
+        setFname(data.fname);
+        setLname(data.lname);
+        setMname(data.mname);
+        setMothername(data.mothername);
+        setDate(data.dateofbirth);
+        setEmail(data.email);
+        setAddress(data.address);
+        setNumber(data.pnumber);
+        setSection(data.section_id);
+    }
+
     const handleSave = async () => {
+        const id = props.match.params.id;
 
         let reqBody = {
             fname: fname,
@@ -26,13 +39,11 @@ export default function Create_Student(props) {
             email: email,
             address: address,
             pnumber: pnumber,
-            image: image,
-            section_id: section_id,
-
+            section_id: section_id
         };
 
-        await fetch("http://127.0.0.1:8000/api/student", {
-            method: "POST",
+        await fetch(`http://127.0.0.1:8000/api/student/${id}`, {
+            method: "PUT",
             body: JSON.stringify(reqBody),
             headers: {
                 'Content-Type': 'application/json'
@@ -42,6 +53,10 @@ export default function Create_Student(props) {
         await props.history.push(`/student/list`);
     }
 
+    useEffect(() => {
+        getStudent(props.match.params.id);
+    }, []);
+
     return (
         <div>
             <input
@@ -50,68 +65,76 @@ export default function Create_Student(props) {
                 value={fname}
                 onChange={e => setFname(e.target.value)}
                 placeholder="First Name"
-            /> <br/>
+            />
+            <br/>
             <input
                 type="text"
                 name="lname"
                 value={lname}
                 onChange={e => setLname(e.target.value)}
                 placeholder="Last Name"
-            /><br/>
+            />
+            <br/>
             <input
                 type="text"
-                name="mname"
+                name="fatherName"
                 value={mname}
                 onChange={e => setMname(e.target.value)}
-                placeholder="Middle Name"
-            /><br/>
+                placeholder="Father Name"
+            />
+            <br/>
             <input
                 type="text"
-                name="mothername"
+                name="motherName"
                 value={mothername}
                 onChange={e => setMothername(e.target.value)}
-                placeholder="Mother name"
-            /><br/>
+                placeholder="Mother Name"
+            />
+            <br/>
             <input
                 type="date"
-                name="dateofbirth"
+                name="Birthdate"
                 value={dateofbirth}
-                onChange={e => setDateofbirth(e.target.value)}
-                placeholder="Date Of Birth"
-            /><br/>
+                onChange={e => setDate(e.target.value)}
+                placeholder="Birthdate"
+            />
+            <br/>
             <input
-                type="email"
-                name="email"
+                type="text"
+                name="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="Email"
-            /><br/>
+            />
+             <br/>
             <input
                 type="text"
                 name="address"
                 value={address}
                 onChange={e => setAddress(e.target.value)}
                 placeholder="Address"
-            /><br/>
-            <input
-                type="text"
-                name="pnumber"
-                value={pnumber}
-                onChange={e => setPnumber(e.target.value)}
-                placeholder="Personal Number"
-            /><br/>
-            <input
-                type="text"
-                name="image"
-                value={image}
-                onChange={e => setImage(e.target.value)}
-                placeholder="Image"
-            /><br/>
-          <Sections
-            onChange={e=>setSection_id(e.target.value)}
             />
+            <br/>
+            <input 
+                type="text"
+                name="phone"
+                value={pnumber}
+                onChange={e => setNumber(e.target.value)}
+                placeholder="Phone"
+            />
+            <br/>
+            <input
+            readOnly
+                type="text"
+                name="section"
+                value={section_id}
+                onChange={e => setSection(e.target.value)}
+                placeholder="Section"
+            />
+            <br/>
 
-            <button name="save" onClick={handleSave} >Add</button>
+            <Link name="save" onClick={handleSave} >Save</Link>
+            <Link name="cancel" onClick={() => props.history.push(`/student/list`)}>Cancel</Link>
         </div>
     );
 }

@@ -1,98 +1,101 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import API from '../../../api';
-import { Switch, Route, Link, useParams } from 'react-router-dom'
+import IN from '../../../Components/Input';
 
-function Edit_Admin() {
+export default function Edit_Admin(props) {
+
     const [fname, setFname] = useState("");
     const [lname, setLname] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
 
-    let { id } = useParams();
-    const admin_id = id;
-    // const [state, updateState] = useState({})
-    const [admin, setAdmins] = useState({})
-
-    const GetAdmin_id = async () => {
-        const data = await API.get(`admin/${admin_id}`);
-        setAdmins(data.data);
-        console.log(data.data);
+    const getAdmin = async id => {
+        await API.get(`admin/${id}`)
+            .then(res => {
+                const result = res.data;
+                setFname(result.fname);
+                setLname(result.lname);
+                setUsername(result.username);
+                setPassword(result.password);
+            });
     }
 
-    const setState = (nextState) => {
-        setAdmins({
-            ...admin,
-            ...nextState
-        })
-    }
+    const handleSave = async () => {
+        const id = props.match.params.id;
 
-    const handleChange = e => {
-        let { name, value } = e.target;
-        setState({
-            [name]: value
-        })
+        let reqBody = {
+            fname: fname,
+            lname: lname,
+            username: username,
+            password: password,
+            phone: phone,
+            email:email
+        };
+
+        await API.put(`admin/${id}`, (reqBody));
+        await props.history.push(`/admin/list`);
     }
 
     useEffect(() => {
-        GetAdmin_id()
+        getAdmin(props.match.params.id);
     }, []);
 
     return (
         <div>
-            <label htmlFor="firstname">First name: </label><input type="text"
-                id="fname"
-                placeholder="First name"
+            <IN
+                type="text"
                 name="fname"
-                value={admin.fname}
-                onChange={handleChange} /><br /><br />
-
-            <label htmlFor="lastname">Last name: </label><input type="text"
-                id="lname"
-                placeholder="Last name"
-                value={admin.lname}
-                name="lname"
-                onChange={handleChange}/><br /><br />
-
-            <label htmlFor="username">Username: </label><input type="text"
-                id="username"
-                placeholder="Username"
-                value={admin.username}
-                name="username"
-                onChange={handleChange} /><br /><br />
-
-            <label htmlFor="password">Password: </label><input type="text"
-                id="password"
-                placeholder="Password"
-                value={admin.password}
-                name="password"
-                onChange={handleChange} /><br /><br />
-
-
-            <label htmlFor="phone">Phone Number: </label>
-            <input type="text"
-                id="phone"
-                placeholder="Phone Number"
-                value={admin.phone}
-                name="phone"
-                onChange={handleChange}
-            /><br /><br />
-
-            <label htmlFor="phone">Email: </label>
-            <input type="email"
-                id="email"
-                placeholder="Email"
-                value={admin.email}
-                name="email"
-                onChange={handleChange}
+                value={fname}
+                onChange={e => setFname(e.target.value)}
+                placeholder="First Name"
             />
-            <br /><br />
-            <button type="submit" onClick="">Save</button>
+            <IN
+                type="text"
+                name="lname"
+                value={lname}
+                onChange={e => setLname(e.target.value)}
+                placeholder="Last Name"
+            />
+            <IN
+                type="text"
+                name="username"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                placeholder="Username"
+            />
+            <IN
+                type="text"
+                name="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="Password"
+            />
+            <IN
+                type="integer"
+                name="phone"
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
+                placeholder="Phone"
+            />
+            <IN
+                type="text"
+                name="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="Email"
+            />
+            <Link
+                name="save"
+                onClick={handleSave}
+            > Save </Link>
 
+            <Link
+                name="cancel"
+                onClick={() => props.history.push(`/admin/list`)}
+            >Cancel</Link>
         </div>
     );
 }
-
-export default Edit_Admin;

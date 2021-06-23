@@ -1,58 +1,57 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import API from '../../../api';
-import { Switch, Route, Link } from 'react-router-dom'
 
+export default function List_Admin(props) {
 
-function List_Admin() {
     const [admins, setAdmins] = useState([]);
 
-    const getAdmins = async () => {
-        const data = await API.get("/admin");
-        setAdmins(data.data);
-        console.log(data.data);
+    const fetchdata = async () => {
+        await API.get(`admin`)
+            .then(res => {
+                const result = res.data;
+                setAdmins(result);
+            });
+    }
+
+    const deleteAdmin = async id => {
+        await API.delete(`admin/${id}`);
+        let filter = [...admins].filter((admins) => admins.id !== id);
+        setAdmins(filter);
+        // window.location.reload();
     }
 
     useEffect(() => {
-        getAdmins()
+        fetchdata();
     }, []);
 
     return (
         <div>
             <table>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Phone</th>
-                <th>Email</th>
-
-                <tbody>
-                    {admins.map((admins) => {
-                        return (
-                            <tr key={admins.id}>
-                                <td>{admins.fname}</td>
-                                <td>{admins.lname}</td>
-                                <td>{admins.username}</td>
-                                <td>{admins.password}</td>
-                                <td>{admins.phone}</td>
-                                <td>{admins.email}</td>
-                                <Link to={`admin/edit/${admins.id}`}>
-                                    <button>
-                                        Edit
-                                    </button>
-                                </Link>
-                            </tr>
-
-
-                        );
-                    })}
-                </tbody>
-
+                <tr>
+                    <td>ID</td>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>Username</td>
+                    <td>Password</td>
+                    <td>Phone</td>
+                    <td>Email</td>
+                </tr>
+                {admins.map(admin =>
+                    <tr>
+                        <td>{admin.id}</td>
+                        <td>{admin.fname}</td>
+                        <td>{admin.lname}</td>
+                        <td>{admin.username}</td>
+                        <td>{admin.password}</td>
+                        <td>{admin.phone}</td>
+                        <td>{admin.email}</td>
+                        <td><Link onClick={() => props.history.push(`/admin/edit/${admin.id}`)}>Edit</Link></td>
+                        <td><Link onClick={() => deleteAdmin(admin.id)}>Delete</Link></td>
+                        <td></td>
+                    </tr>
+                )}
             </table>
-
         </div>
-    );
+    )
 }
-
-export default List_Admin;

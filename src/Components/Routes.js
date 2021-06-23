@@ -12,7 +12,7 @@ export default function Routes() {
     return (
         <Switch>
             <Route exact path='/admin/create' component={Create_Admin} />
-            <Route exact path='/admin' component={List_Admin} />
+            <Route exact path='/admin/list' component={List_Admin} />
             <Route exact path='/admin/edit/:id' component={Edit_Admin} />
 
 
