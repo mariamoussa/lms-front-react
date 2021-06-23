@@ -16,6 +16,7 @@ export default function List_Admin(props) {
 
     const deleteAdmin = async id => {
         await API.delete(`admin/${id}`);
+        //to refresh the list without reloading the page
         let filter = [...admins].filter((admins) => admins.id !== id);
         setAdmins(filter);
         // window.location.reload();
