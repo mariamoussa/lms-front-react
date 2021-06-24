@@ -10,6 +10,10 @@ import Edit_Student from '../Pages/Admin_Panel/Manage_Student/Edit_Student';
 import Create_Section from '../Pages/Admin_Panel/Manage_Section/Create_Section';
 import List_Section from '../Pages/Admin_Panel/Manage_Section/List_Section';
 import Edit_Section from '../Pages/Admin_Panel/Manage_Section/Edit_Section';
+import Create_Classroom from '../Pages/Admin_Panel/Manage_Classroom/Create_Classroom';
+import List_Classroom from '../Pages/Admin_Panel/Manage_Classroom/List_Classroom';
+import Edit_Classroom from '../Pages/Admin_Panel/Manage_Classroom/Edit_Classroom';
+
 
 
 
@@ -31,6 +35,11 @@ export default function Routes() {
             <Route exact path='/section/create' component={Create_Section} />
             <Route exact path='/section/list' component={List_Section} />
             <Route exact path='/section/edit/:id' component={Edit_Section} />
+
+
+            <Route exact path='/classroom/create' component={Create_Classroom} />
+            <Route exact path='/classroom/list' component={List_Classroom} />
+            <Route exact path='/classroom/edit/:id' component={Edit_Classroom} />
 
 
 
