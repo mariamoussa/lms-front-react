@@ -20,6 +20,8 @@ export default function Edit_Admin(props) {
                 setLname(result.lname);
                 setUsername(result.username);
                 setPassword(result.password);
+                setPhone(result.phone);
+                setEmail(result.email);
             });
     }
 
