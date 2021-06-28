@@ -10,10 +10,11 @@ export default function Sections_List(props) {
 
     const fetchdata = async () => {
         const id = props.idClass;
-        await API.get(`sectionClass/${id}`)
+        await API.get(`sectionClassroom/${id}`)
             .then(res => {
                 const data = res.data;
                 setSections(data);
+                console.log(data);
             });
     }
 
@@ -26,7 +27,6 @@ export default function Sections_List(props) {
             onChange={props.aymie}
         >
             <option value={null}>Section</option>
-
             {sections.map(section => (
                 <option
                     key={section.id}
@@ -35,7 +35,6 @@ export default function Sections_List(props) {
                     {section.name}
                 </option>
             ))}
-
         </select>
     );
 }

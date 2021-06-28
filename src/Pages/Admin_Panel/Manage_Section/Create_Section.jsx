@@ -15,7 +15,7 @@ export default function Create_Section(props) {
             max_students: maxStudents,
             classroom_id: classroom_id
         }
-        console.log(reqBody);
+        // console.log(reqBody);
         await API.post('section', reqBody);
         await props.history.push('/section/list');
     }

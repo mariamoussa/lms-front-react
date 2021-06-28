@@ -1,30 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import API from '../../../api';
+import IN from '../../../Components/Input';
 
 export default function Edit_Student(props) {
 
     const [fname, setFname] = useState("");
     const [lname, setLname] = useState("");
-    const [mname, setMname] = useState("");
+    const [middlename, setMiddlename] = useState("");
     const [mothername, setMothername] = useState("");
-    const [dateofbirth, setDate] = useState("");
+    const [birthdate, setBirthdate] = useState("");
+    const [gender, setGender] = useState("");
+    const [bloodtype, setBloodtype] = useState("");
     const [email, setEmail] = useState("");
-    const [address, setAddress] = useState("");
-    const [pnumber, setNumber] = useState("");
-    const [section_id, setSection] = useState("");
+    const [phone, setPhone] = useState("");
+    // const [photo, setPhoto] = useState("");
+    const [classroom, setClassroom] = useState("");
+    const [section, setSection] = useState("");
 
     const getStudent = async id => {
-        const result = await fetch(`http://127.0.0.1:8000/api/student/${id}`);
-        const data = await result.json();
-        setFname(data.fname);
-        setLname(data.lname);
-        setMname(data.mname);
-        setMothername(data.mothername);
-        setDate(data.dateofbirth);
-        setEmail(data.email);
-        setAddress(data.address);
-        setNumber(data.pnumber);
-        setSection(data.section_id);
+        await API.get(`stu-sec-class/${id}`).then(
+            res=>{
+                const result = res.data.data;
+                setFname(result.fname);
+                setLname(result.lname);
+                setMiddlename(result.middlename);
+                setMothername(result.mothername);
+                setBirthdate(result.birthdate);
+                setGender(result.gender);
+                setEmail(result.email);
+                setPhone(result.phone);
+                setBloodtype(result.bloodtype);
+                // setPhoto(result.photo);
+                setClassroom(result.classroom_name);
+                setSection(result.section_name);
+            }
+        )
     }
 
     const handleSave = async () => {
@@ -33,24 +44,27 @@ export default function Edit_Student(props) {
         let reqBody = {
             fname: fname,
             lname: lname,
-            mname: mname,
+            mniddlename: middlename,
             mothername: mothername,
-            dateofbirth: dateofbirth,
+            birthdate: birthdate,
+            gender:gender,
             email: email,
-            address: address,
-            pnumber: pnumber,
-            section_id: section_id
+            bloodtype: bloodtype,
+            phone: phone,
+            section_name: section,
+            classroom_name: classroom
         };
 
-        await fetch(`http://127.0.0.1:8000/api/student/${id}`, {
-            method: "PUT",
-            body: JSON.stringify(reqBody),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
+        await API.put(`student/${id}`, (reqBody));
         await props.history.push(`/student/list`);
+
+        // await fetch(`http://127.0.0.1:8000/api/student/${id}`, {
+        //     method: "PUT",
+        //     body: JSON.stringify(reqBody),
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // });
     }
 
     useEffect(() => {
@@ -59,7 +73,7 @@ export default function Edit_Student(props) {
 
     return (
         <div>
-            <input
+            <IN
                 type="text"
                 name="fname"
                 value={fname}
@@ -67,7 +81,7 @@ export default function Edit_Student(props) {
                 placeholder="First Name"
             />
             <br/>
-            <input
+            <IN
                 type="text"
                 name="lname"
                 value={lname}
@@ -75,15 +89,15 @@ export default function Edit_Student(props) {
                 placeholder="Last Name"
             />
             <br/>
-            <input
+            <IN
                 type="text"
-                name="fatherName"
-                value={mname}
-                onChange={e => setMname(e.target.value)}
-                placeholder="Father Name"
+                name="middlename"
+                value={middlename}
+                onChange={e => setMiddlename(e.target.value)}
+                placeholder="Middle Name"
             />
             <br/>
-            <input
+            <IN
                 type="text"
                 name="motherName"
                 value={mothername}
@@ -91,15 +105,15 @@ export default function Edit_Student(props) {
                 placeholder="Mother Name"
             />
             <br/>
-            <input
+            <IN
                 type="date"
                 name="Birthdate"
-                value={dateofbirth}
-                onChange={e => setDate(e.target.value)}
+                value={birthdate}
+                onChange={e => setBirthdate(e.target.value)}
                 placeholder="Birthdate"
             />
             <br/>
-            <input
+            <IN
                 type="text"
                 name="Email"
                 value={email}
@@ -107,28 +121,45 @@ export default function Edit_Student(props) {
                 placeholder="Email"
             />
              <br/>
-            <input
+            <IN
                 type="text"
-                name="address"
-                value={address}
-                onChange={e => setAddress(e.target.value)}
-                placeholder="Address"
+                name="gender"
+                value={gender}
+                onChange={e => setGender(e.target.value)}
+                placeholder="Gender"
             />
             <br/>
-            <input 
+            <IN
+                type="text"
+                name="bloodtype"
+                value={bloodtype}
+                onChange={e => setBloodtype(e.target.value)}
+                placeholder="Bloodtype"
+            />
+            <br/>
+            <IN 
                 type="text"
                 name="phone"
-                value={pnumber}
-                onChange={e => setNumber(e.target.value)}
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
                 placeholder="Phone"
             />
             <br/>
-            <input
+            <IN
+            readOnly
+                type="text"
+                name="classroom"
+                value={classroom}
+                // onChange={e => setClassroom(e.target.value)}
+                placeholder="Classroom"
+            />
+            <br/>
+            <IN
             readOnly
                 type="text"
                 name="section"
-                value={section_id}
-                onChange={e => setSection(e.target.value)}
+                value={section}
+                // onChange={e => setSection(e.target.value)}
                 placeholder="Section"
             />
             <br/>

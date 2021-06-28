@@ -4,16 +4,19 @@ import { Switch, Route } from 'react-router-dom'
 import Create_Admin from '../Pages/Admin_Panel/Manage_Admin/Create_Admin';
 import List_Admin from '../Pages/Admin_Panel/Manage_Admin/List_Admin';
 import Edit_Admin from '../Pages/Admin_Panel/Manage_Admin/Edit_Admin';
+
 import Create_Student from '../Pages/Admin_Panel/Manage_Student/Create_Student';
 import List_Student from '../Pages/Admin_Panel/Manage_Student/List_Student';
 import Edit_Student from '../Pages/Admin_Panel/Manage_Student/Edit_Student';
+import Info_Student from '../Pages/Admin_Panel/Manage_Student/Info_Student';
+
 import Create_Section from '../Pages/Admin_Panel/Manage_Section/Create_Section';
 import List_Section from '../Pages/Admin_Panel/Manage_Section/List_Section';
 import Edit_Section from '../Pages/Admin_Panel/Manage_Section/Edit_Section';
+
 import Create_Classroom from '../Pages/Admin_Panel/Manage_Classroom/Create_Classroom';
 import List_Classroom from '../Pages/Admin_Panel/Manage_Classroom/List_Classroom';
 import Edit_Classroom from '../Pages/Admin_Panel/Manage_Classroom/Edit_Classroom';
-
 
 
 
@@ -31,6 +34,7 @@ export default function Routes() {
             <Route exact path='/student/create' component={Create_Student} />
             <Route exact path='/student/list' component={List_Student} />
             <Route exact path='/student/edit/:id' component={Edit_Student} />
+            <Route exact path='/student/info/:id' component={Info_Student} />
 
             <Route exact path='/section/create' component={Create_Section} />
             <Route exact path='/section/list' component={List_Section} />

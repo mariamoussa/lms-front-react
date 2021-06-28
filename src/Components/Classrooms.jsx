@@ -15,18 +15,16 @@ export default function Classrooms(props) {
     }, []);
 
     return (
-        <div>
-            <select onChange={props.mostafa}>
-                <option value={null}>Classroom</option>
-                {classrooms.map(classroom => (
-                    <option
-                        key={classroom.id}
-                        value={classroom.id}
-                    >
-                        {classroom.name}
-                    </option>
-                ))}
-            </select>
-        </div>
+        <select onChange={props.mostafa}>
+            <option value={null}>Classroom</option>
+            {classrooms.map(classroom => (
+                <option
+                    key={classroom.id}
+                    value={classroom.id}
+                >
+                    {classroom.name}
+                </option>
+            ))}
+        </select>
     );
 }

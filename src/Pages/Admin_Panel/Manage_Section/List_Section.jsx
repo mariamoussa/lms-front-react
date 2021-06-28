@@ -28,7 +28,7 @@ export default function List_Section(props) {
 
     return (
         <div>
-            <table>
+            <table border="2px">
                 <tr>
                     <td>ID</td>
                     <td>Name</td>

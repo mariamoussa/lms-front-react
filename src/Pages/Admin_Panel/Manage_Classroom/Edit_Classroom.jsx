@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+import API from '../../../api';
 import Input from '../../../Components/Input';
 
-export default function Edit_AdminClassroom(props) {
-
+export default function Edit_Classroom(props) {
+    
     const [name, setName] = useState("");
 
     const getClassroom = async id => {
-        const result = await fetch(`http://127.0.0.1:8000/api/classroom/${id}`);
-        const data = await result.json();
+        await API.get(`classroom/${id}`)
+        .then(res=>{
+            const result= res.data;
+            setName(result.name);
+        });
+        // const result = await fetch(`http://127.0.0.1:8000/api/classroom/${id}`);
+        // const data = await result.json();
 
-        setName(data.name);
+        // setName(data.name);
     }
 
     const handleSave = async () => {
@@ -21,16 +26,18 @@ export default function Edit_AdminClassroom(props) {
             name: name
         };
 
-        await fetch(`http://127.0.0.1:8000/api/classroom/${id}`, {
-            method: "PUT",
-            body: JSON.stringify(reqBody),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
+        await API.put(`classroom/${id}`, (reqBody));
         await props.history.push(`/classroom/list`);
     }
+        // await fetch(`http://127.0.0.1:8000/api/classroom/${id}`, {
+        //     method: "PUT",
+        //     body: JSON.stringify(reqBody),
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // });
+
+   
 
     useEffect(() => {
         getClassroom(props.match.params.id);
